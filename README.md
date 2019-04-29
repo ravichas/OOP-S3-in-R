@@ -4,4 +4,4 @@
 * A fun example will show how easy it is to create S3 generic function
 * Motivation for the purpose of S4 system using SummarizedExperiment Bioconductor object  
 
-Soon, I will come back with a separate lecture on S4 and R6 OOP systems in R.
+Soon, we will come back with a separate lecture on S4 and R6 OOP systems in R.
