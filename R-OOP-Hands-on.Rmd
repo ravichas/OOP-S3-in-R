@@ -158,8 +158,7 @@ Interrogation of objects to see whether they are S3 objects.
 int_mat
 sloop::otype(int_mat) # package::command(object)
 
-
-mtcars
+head(mtcars)
 sloop::otype(mtcars)
 
 ```
@@ -218,7 +217,7 @@ print.Date(x_Date) # "2019-03-26"
 
 Exmaple. print (generic), print.data.frame, print.Date etc.
 ```{r What-methods-for-generic}
-methods(print) # too many methods 
+head( methods(print) ) # too many methods 
 ```
 
 ### What methods are available for a given class of an object? 
