@@ -2,7 +2,7 @@
 title: "OOP-R-Hands-on"
 author: "S.Ravichandran"
 date: "April 27, 2019"
-output: html_document 
+output: github_document 
 ---
 
 <style type="text/css">
