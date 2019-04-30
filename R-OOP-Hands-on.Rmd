@@ -28,13 +28,17 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+
+
 ### Preliminary information: Important object types in R 
 
+Let us create a logical object, x.
 ```{r logicaltype}
 (x <- TRUE) # logical
 print(class(x))
 ```
 
+Let us create a list, also called x. 
 ```{r numericaltype}
 ( x <- list(nums = 1:10, 
           chars = c("one","two","three"),
@@ -43,6 +47,7 @@ print(class(x))
 print(class(x))
 ```
 
+BMI is a data.frame with four variables, Gender, Height, Weight and Age.
 ```{r dftype}
 (BMI <- 	data.frame(
    Gender = c("Male", "Male","Female"), 
@@ -55,32 +60,56 @@ print(class(BMI))
 
 ### Hands-on 1
 
-## Important concept of OOP: Functions can respond in different ways depending on the object type.
+```{r, echo=FALSE, warning=FALSE}
+# needed libraries
+packages <- c("pryr", "sloop","magrittr","dplyr","ggplot2")
+if ( length(missing_pkgs <- setdiff(packages, rownames(installed.packages()))) > 0) {
+  message("Installing missing package(s): ", paste(missing_pkgs, collapse = ", "))
+  install.packages(missing_pkgs)
+}
 
-Let us create the following things:
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+library(pryr)
+library(sloop)
+```
+
+One of the important concept of OOP is functions can respond in different ways depending on the input object type.
+To explain this concept, let us create the following objects:
   * numeric vector of 10 random numbers
   * categorical vector of length 6 
   * a linear model object
   
+First, let us create a numerical vector with 10 elements.
 ```{r numeric-var, eval=TRUE }
 ( x_num <- rnorm(10) )
 ```
 
-Categorical variable
+Next, we build a categorical vector with 6 elements.
 ```{r factor-var, eval=TRUE}
 ( x_fac <- factor(c("A", "B", "A", "C", "A", "B")) )
 ```
 
+
+Finally, a linear model variable. 
+
 ```{r model-var, eval=TRUE}
 # setting seed
+
 set.seed(123)
 (x <- 1:10)
 (y <- jitter(x, amount = 2))
-plot(x,y)
 
 #build a model
 (model <- lm(y ~ x))
+
+data.frame(x, y) %>% ggplot(aes(x, y)) + 
+  geom_point() + 
+  geom_smooth()
+
 ```
+
 ### Call summary function on the different class of objects
 
 ```{r summary-numeric}
@@ -96,6 +125,7 @@ summary(x_fac)
 ```{r summary-model}
 model
 summary(model)
+
 ```
 
 ### How does R distinguish types of variables? what command(s) can be used for this task?
@@ -124,9 +154,6 @@ Introduction to S3-systems.
 Interrogation of objects to see whether they are S3 objects.
 
 ```{r}
-# usually the library calls have to be at the top. 
-#install.packages("sloop")
-library(sloop)
 
 int_mat
 sloop::otype(int_mat) # package::command(object)
@@ -215,17 +242,14 @@ print function calls UseMethod("print")
 
 
 ```{r}
-#install.packages("pryr")
-library(pryr)
-is_s3_generic("print") # TRUE
-is_s3_method("print") # FALSE
-is_s3_method("print.Date") # TRUE
+pryr::is_s3_generic("print") # TRUE
+pryr::is_s3_method("print") # FALSE
+pryr::is_s3_method("print.Date") # TRUE
 print
 ```
 
 
 ```{r}
-rm(people)
 
 ( people <- c("Frank Blanchard",
             "Andrea Gnuschke",
@@ -269,8 +293,7 @@ only has 2 methods available. If you pass a data.frame/matrix to get_n_elements(
 
 ### Can variables have more than one class? 
 
-```{r}
-rm(human)
+```{r S3-MultipleClasses}
 human <- "laugh"
 
 # less specific to more specific; final default class,character
