@@ -1,6 +1,6 @@
 ---
-title: "OOP-R-Hands-on"
-author: "S.Ravichandran"
+title: "Introduction to Object-Oriented Programming and S3 System in R"
+author: "S.Ravichandran ( https://github.com/ravichas/OOP-S3-in-R )"
 date: "April 27, 2019"
 output: github_document 
 ---
@@ -28,9 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-
-
-### Preliminary information: Important object types in R 
+### Preliminary information about object types in R
 
 Let us create a logical object, x.
 ```{r logicaltype}
@@ -75,7 +73,8 @@ library(pryr)
 library(sloop)
 ```
 
-One of the important concept of OOP is functions can respond in different ways depending on the input object type.
+One of the important concept of OOP is functions can respond in different 
+ways depending on the input object type.
 To explain this concept, let us create the following objects:
   * numeric vector of 10 random numbers
   * categorical vector of length 6 
@@ -110,7 +109,7 @@ data.frame(x, y) %>% ggplot(aes(x, y)) +
 
 ```
 
-### Call summary function on the different class of objects
+### Behavior of summary function on different class of objects
 
 ```{r summary-numeric}
 x_num
@@ -128,7 +127,9 @@ summary(model)
 
 ```
 
-### How does R distinguish types of variables? what command(s) can be used for this task?
+### How does R distinguish types of variables? 
+
+what command(s) can be used for this task?
 
 ```{r}
 # matrix 
@@ -148,10 +149,11 @@ typeof(float_mat) # double; type of var that makes up matrix
 ```
 
 
-### Hands-on 2: How does R distinguish types of var?
-Introduction to S3-systems.
+### Hands-on 2: 
 
-Interrogation of objects to see whether they are S3 objects.
+* How does R distinguish types of variables?
+* Introduction to S3-systems
+* Interrogation of objects to see whether they are S3 objects
 
 ```{r}
 
@@ -164,7 +166,7 @@ sloop::otype(mtcars)
 ```
 
 
-### S3 & R6: how to assign classes?
+### S3 & R6: How to assign classes?
 
 * Can I override the class? Yes
 * And as expected, it wont break the functionality
@@ -211,7 +213,8 @@ print.Date(x_Date) # "2019-03-26"
 
 ```
 
-### How do we know what (if, any) methods exist for a generic function?
+### What methods exist for a generic function?
+
 * For example, for the generic function what methods are available
 * generic.class1, generic.class2, generic.class3
 
@@ -222,8 +225,10 @@ head( methods(print) ) # too many methods
 
 ### What methods are available for a given class of an object? 
 
-* The methods could be coming from different generic classes. For example, generic1.class, generic2.class etc.
+* The methods could be coming from different generic classes. 
+  For example, generic1.class, generic2.class etc.
 * Note this methods call for this case will return both S3 and s4 objects. 
+
 ```{r}
 methods(class="lm") # or methods(class=lm)
 .S3methods(class="lm")
@@ -249,7 +254,6 @@ print
 
 
 ```{r}
-
 ( people <- c("Frank Blanchard",
             "Andrea Gnuschke",
             "Max Cole",
@@ -286,9 +290,11 @@ GetFirst(people)
 
 ```
 
-If no suitable methods can be found for a generic, then an error is thrown. For example, at the moment, get_n_elements() 
-only has 2 methods available. If you pass a data.frame/matrix to get_n_elements() instead, you'll see an error. One could use generic.default to deal with all the missing class of objects.
-
+If no suitable methods can be found for a generic, then an error is thrown. 
+For example, at the moment, get_n_elements() 
+only has 2 methods available. If you pass a 
+data.frame/matrix to get_n_elements() instead, you'll see an error. One 
+could use generic.default to deal with all the missing class of objects.
 
 ### Can variables have more than one class? 
 

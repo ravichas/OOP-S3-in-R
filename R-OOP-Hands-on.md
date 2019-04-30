@@ -1,6 +1,6 @@
-OOP-R-Hands-on
+Introduction to Object-Oriented Programming and S3 System in R
 ================
-S.Ravichandran
+S.Ravichandran ( <https://github.com/ravichas/OOP-S3-in-R> )
 April 27, 2019
 
 <style type="text/css">
@@ -15,7 +15,7 @@ pre {
   font-size: 20px
 }
 </style>
-### Preliminary information: Important object types in R
+### Preliminary information about object types in R
 
 Let us create a logical object, x.
 
@@ -105,8 +105,8 @@ First, let us create a numerical vector with 10 elements.
 ( x_num <- rnorm(10) )
 ```
 
-    ##  [1]  1.0875  0.1631  0.5296  0.3182  0.3025  0.3676 -0.5155 -0.3726
-    ##  [9] -1.0823 -1.5540
+    ##  [1] -1.96188 -1.83208  1.68434  0.22960 -0.58941 -0.01389  0.13539
+    ##  [8]  0.54475  0.17203 -0.85157
 
 Next, we build a categorical vector with 6 elements.
 
@@ -157,21 +157,21 @@ data.frame(x, y) %>% ggplot(aes(x, y)) +
 
 ![](R-OOP-Hands-on_files/figure-markdown_github/model-var-1.png)
 
-### Call summary function on the different class of objects
+### Behavior of summary function on different class of objects
 
 ``` r
 x_num
 ```
 
-    ##  [1]  1.0875  0.1631  0.5296  0.3182  0.3025  0.3676 -0.5155 -0.3726
-    ##  [9] -1.0823 -1.5540
+    ##  [1] -1.96188 -1.83208  1.68434  0.22960 -0.58941 -0.01389  0.13539
+    ##  [8]  0.54475  0.17203 -0.85157
 
 ``` r
 summary(x_num)
 ```
 
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-    ## -1.5540 -0.4797  0.2328 -0.0756  0.3553  1.0875
+    ## -1.9619 -0.7860  0.0607 -0.2483  0.2152  1.6843
 
 ``` r
 x_fac
@@ -222,7 +222,9 @@ summary(model)
     ## Multiple R-squared:  0.87,   Adjusted R-squared:  0.854 
     ## F-statistic: 53.6 on 1 and 8 DF,  p-value: 8.22e-05
 
-### How does R distinguish types of variables? what command(s) can be used for this task?
+### How does R distinguish types of variables?
+
+what command(s) can be used for this task?
 
 ``` r
 # matrix 
@@ -275,11 +277,11 @@ typeof(float_mat) # double; type of var that makes up matrix
 # c code; in C floating point #s are double
 ```
 
-### Hands-on 2: How does R distinguish types of var?
+### Hands-on 2:
 
-Introduction to S3-systems.
-
-Interrogation of objects to see whether they are S3 objects.
+-   How does R distinguish types of variables?
+-   Introduction to S3-systems
+-   Interrogation of objects to see whether they are S3 objects
 
 ``` r
 int_mat
@@ -315,7 +317,7 @@ sloop::otype(mtcars)
 
     ## [1] "S3"
 
-### S3 & R6: how to assign classes?
+### S3 & R6: How to assign classes?
 
 -   Can I override the class? Yes
 -   And as expected, it wont break the functionality
@@ -325,8 +327,8 @@ sloop::otype(mtcars)
 x_num
 ```
 
-    ##  [1]  1.0875  0.1631  0.5296  0.3182  0.3025  0.3676 -0.5155 -0.3726
-    ##  [9] -1.0823 -1.5540
+    ##  [1] -1.96188 -1.83208  1.68434  0.22960 -0.58941 -0.01389  0.13539
+    ##  [8]  0.54475  0.17203 -0.85157
 
 ``` r
 class(x_num)
@@ -352,8 +354,8 @@ class(x_num)
 x_num
 ```
 
-    ##  [1]  1.0875  0.1631  0.5296  0.3182  0.3025  0.3676 -0.5155 -0.3726
-    ##  [9] -1.0823 -1.5540
+    ##  [1] -1.96188 -1.83208  1.68434  0.22960 -0.58941 -0.01389  0.13539
+    ##  [8]  0.54475  0.17203 -0.85157
     ## attr(,"class")
     ## [1] "random-numbers"
 
@@ -395,7 +397,7 @@ print
 
     ## function (x, ...) 
     ## UseMethod("print")
-    ## <bytecode: 0x00000000189cf6f0>
+    ## <bytecode: 0x00000000189df6b8>
     ## <environment: namespace:base>
 
 ``` r
@@ -417,7 +419,7 @@ print.Date(x_Date) # "2019-03-26"
 
     ## [1] "2019-04-30"
 
-### How do we know what (if, any) methods exist for a generic function?
+### What methods exist for a generic function?
 
 -   For example, for the generic function what methods are available
 -   generic.class1, generic.class2, generic.class3
@@ -495,7 +497,7 @@ print
 
     ## function (x, ...) 
     ## UseMethod("print")
-    ## <bytecode: 0x00000000189cf6f0>
+    ## <bytecode: 0x00000000189df6b8>
     ## <environment: namespace:base>
 
 ``` r
