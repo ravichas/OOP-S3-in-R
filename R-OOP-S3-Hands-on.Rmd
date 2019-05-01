@@ -101,11 +101,11 @@ set.seed(123)
 (y <- jitter(x, amount = 2))
 
 #build a model
-(model <- lm(y ~ x))
+(model <- glm(y ~ x))
 
 data.frame(x, y) %>% ggplot(aes(x, y)) + 
   geom_point() + 
-  geom_smooth()
+  geom_smooth(method = "lm", col = "red")
 
 ```
 
