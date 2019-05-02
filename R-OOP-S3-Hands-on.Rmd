@@ -22,7 +22,7 @@ pre {
 
 ```{r setup, include=FALSE}
 # set global chunk options: images will be 7x5 inches
-knitr::opts_chunk$set(fig.width=7, fig.height=5)
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 options(digits = 4)
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -38,7 +38,7 @@ print(class(x))
 
 Let us create a list, also called x. 
 ```{r numericaltype}
-( x <- list(nums = 1:10, 
+(x <- list(nums = 1:10, 
           chars = c("one","two","three"),
           ints = c(1L,2L,3L)
           ))
@@ -58,7 +58,7 @@ print(class(BMI))
 
 ### Hands-on 1
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 # needed libraries
 packages <- c("pryr", "sloop","magrittr","dplyr","ggplot2")
 if ( length(missing_pkgs <- setdiff(packages, rownames(installed.packages()))) > 0) {
@@ -76,18 +76,20 @@ library(sloop)
 One of the important concept of OOP is functions can respond in different 
 ways depending on the input object type.
 To explain this concept, let us create the following objects:
+
   * numeric vector of 10 random numbers
   * categorical vector of length 6 
   * a linear model object
   
 First, let us create a numerical vector with 10 elements.
 ```{r numeric-var, eval=TRUE }
-( x_num <- rnorm(10) )
+(x_num <- rnorm(10) )
 ```
+
 
 Next, we build a categorical vector with 6 elements.
 ```{r factor-var, eval=TRUE}
-( x_fac <- factor(c("A", "B", "A", "C", "A", "B")) )
+(x_fac <- factor(c("A", "B", "A", "C", "A", "B")))
 ```
 
 
@@ -101,7 +103,7 @@ set.seed(123)
 (y <- jitter(x, amount = 2))
 
 #build a model
-(model <- glm(y ~ x))
+model <- glm(y ~ x)
 
 data.frame(x, y) %>% ggplot(aes(x, y)) + 
   geom_point() + 
@@ -133,7 +135,7 @@ what command(s) can be used for this task?
 
 ```{r}
 # matrix 
-(int_mat <- matrix(1:12, nrow=4, ncol=3 )) # column major
+(int_mat <- matrix(1:12, nrow = 4, ncol = 3 )) # column major
 
 # determine the variable
 class(int_mat) # obj is a matrix
@@ -141,22 +143,18 @@ class(int_mat) # obj is a matrix
 # what type of matrix (elements are of what type)
 typeof(int_mat) # int matrix; content of the matrix
 
-(float_mat <- matrix(rnorm(12), nrow=4, ncol=3))
+(float_mat <- matrix(rnorm(12), nrow = 4, ncol = 3))
 class(float_mat) # matrix
 typeof(float_mat) # double; type of var that makes up matrix
 # c code; in C floating point #s are double
-
 ```
 
 
 ### Hands-on 2: 
 
-* How does R distinguish types of variables?
-* Introduction to S3-systems
 * Interrogation of objects to see whether they are S3 objects
 
 ```{r}
-
 int_mat
 sloop::otype(int_mat) # package::command(object)
 
@@ -168,9 +166,11 @@ sloop::otype(mtcars)
 
 ### S3 & R6: How to assign classes?
 
-* Can I override the class? Yes
+* Can I override the class? 
+   * Yes
 * And as expected, it wont break the functionality
-* Can I woverride the type? No 
+* Can I woverride the type? 
+   * No 
 
 ```{r}
 x_num
@@ -199,17 +199,16 @@ How does it work?
 Example of generic functions are print, summary etc.
 
 ```{r}
-string <- "Hello World!"
-print(string)
+(string <- "Hello World!")
 
-# Let us look at the function
+# Let us explore the print function
 print
 
-x_Date <- Sys.Date() # "2019-03-26"
+(x_Date <- Sys.Date()) # "YYYY-MM-DD"
 class(x_Date) # "Date"
 
-print(x_Date) # "2019-03-26"
-print.Date(x_Date) # "2019-03-26"
+print(x_Date) # "YYYY-MM-DD", 2019-03-26
+print.Date(x_Date) 
 
 ```
 
@@ -220,7 +219,7 @@ print.Date(x_Date) # "2019-03-26"
 
 Exmaple. print (generic), print.data.frame, print.Date etc.
 ```{r What-methods-for-generic}
-head( methods(print) ) # too many methods 
+head(methods(print)) # too many methods 
 ```
 
 ### What methods are available for a given class of an object? 
@@ -230,8 +229,8 @@ head( methods(print) ) # too many methods
 * Note this methods call for this case will return both S3 and s4 objects. 
 
 ```{r}
-methods(class="lm") # or methods(class=lm)
-.S3methods(class="lm")
+methods(class = "lm") # or methods(class=lm)
+.S3methods(class = "lm")
 ```
 
 
@@ -254,7 +253,7 @@ print
 
 
 ```{r}
-( people <- c("Frank Blanchard",
+(people <- c("Frank Blanchard",
             "Andrea Gnuschke",
             "Max Cole",
             "Maryellen Hackett",
@@ -265,7 +264,7 @@ print
             "Richard Frederickson",
             "Chris Hu") )
 class(people)
-( class(people) <- "InsiteGroup" )
+(class(people) <- "InsiteGroup")
  
 
 # get the first name from the vector 
