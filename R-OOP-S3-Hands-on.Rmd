@@ -89,6 +89,7 @@ To explain this concept, let us create the following objects:
   
 First, let us create a numerical vector with 10 elements.
 ```{r numeric-var, eval=TRUE }
+set.seed(111)
 (x_num <- rnorm(10) )
 ```
 
@@ -103,7 +104,6 @@ Finally, a linear model variable.
 
 ```{r model-var, eval=TRUE}
 # setting seed
-
 set.seed(123)
 (x <- 1:10)
 (y <- jitter(x, amount = 2))
@@ -158,10 +158,10 @@ typeof(float_mat) # double; type of var that makes up matrix
 
 ### Hands-on 2: 
 
-* Interrogation of objects to see whether they are S3 objects
+Interrogation of objects to see whether they are S3 objects
 
 ```{r}
-int_mat
+(int_mat <- matrix(1:12, nrow = 4, ncol = 3 )) # column major
 sloop::otype(int_mat) # package::command(object)
 
 head(mtcars)
@@ -240,7 +240,9 @@ methods(class = "lm") # or methods(class=lm)
 ```
 
 
-As we saw, print function (just a simple 1 line function)
+As we saw earlier, print function is just a simple one line function.
+You can ignore the last two lines that shows the memory location and the
+object  environment. 
 > print
 function (x, ...) 
 UseMethod("print")
