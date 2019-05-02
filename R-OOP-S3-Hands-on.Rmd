@@ -3,9 +3,15 @@ title: "Introduction to Object-Oriented Programming and S3 System in R"
 author: "S.Ravichandran ( https://github.com/ravichas/OOP-S3-in-R )"
 date: "April 27, 2019"
 output: pdf_document 
+theme: flatly
 ---
 
+# based on Carl Broman's code 
 <style type="text/css">
+
+ul,ol {
+  margin: 0 0 0 35px;
+}
 
 body, td {
    font-size: 14px;
