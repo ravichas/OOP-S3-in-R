@@ -79,13 +79,13 @@ library(pryr)
 library(sloop)
 ```
 
-One of the important concept of OOP is functions can respond in different 
-ways depending on the input object type.
+One of the important concept of OOP is functions can 
+respond in different ways depending on the input object type.
 To explain this concept, let us create the following objects:
 
-  * numeric vector of 10 random numbers
-  * categorical vector of length 6 
-  * a linear model object
+  * Numeric vector of 10 random numbers
+  * Categorical vector of length 6 
+  * A linear model object
   
 First, let us create a numerical vector with 10 elements.
 ```{r numeric-var, eval=TRUE }
@@ -109,7 +109,7 @@ set.seed(123)
 (y <- jitter(x, amount = 2))
 
 #build a model
-model <- glm(y ~ x)
+model <- lm(y ~ x)
 
 data.frame(x, y) %>% ggplot(aes(x, y)) + 
   geom_point() + 
@@ -205,18 +205,24 @@ How does it work?
 Example of generic functions are print, summary etc.
 
 ```{r}
-(string <- "Hello World!")
-
-# Let us explore the print function
-print
 
 (x_Date <- Sys.Date()) # "YYYY-MM-DD"
 class(x_Date) # "Date"
 
 print(x_Date) # "YYYY-MM-DD", 2019-03-26
+# is same as calling print.Date
 print.Date(x_Date) 
 
+# Let us explore the print function
+print
+
 ```
+
+print function is just a simple one line function.
+You can ignore the last two lines that shows the memory 
+location and the object  environment. 
+print function calls UseMethod("print") to provide the final output.
+
 
 ### What methods exist for a generic function?
 
@@ -235,30 +241,20 @@ head(methods(print)) # too many methods
 * Note this methods call for this case will return both S3 and s4 objects. 
 
 ```{r}
+# gives both S3 and S4
 methods(class = "lm") # or methods(class=lm)
+# of them which ones are S3
 .S3methods(class = "lm")
 ```
 
-
-As we saw earlier, print function is just a simple one line function.
-You can ignore the last two lines that shows the memory location and the
-object  environment. 
-> print
-function (x, ...) 
-UseMethod("print")
-<bytecode: 0x000000000a237408> # memory, important, ignore for now
-<environment: namespace:base>  # environment, important, but ignore for now
-
-print function calls UseMethod("print")
-
+### Is the object/function generic or method? 
 
 ```{r}
 pryr::is_s3_generic("print") # TRUE
 pryr::is_s3_method("print") # FALSE
 pryr::is_s3_method("print.Date") # TRUE
-print
 ```
-
+Let us define our object.
 
 ```{r}
 (people <- c("Frank Blanchard",
@@ -273,14 +269,15 @@ print
             "Chris Hu") )
 class(people)
 (class(people) <- "InsiteGroup")
- 
+```
 
-# get the first name from the vector 
-# create generic function 
+Suppose, we want to write an S3 function that gets the 
+first name from the InsiteGroup object.
+
+```{r}
 GetFirst <- function(obj) { 
   UseMethod("GetFirst",obj) 
   }
-class(GetFirst)
 
 # create methods function 
 GetFirst.InsiteGroup <- function(obj) { 
@@ -297,20 +294,18 @@ GetFirst(people)
 
 ```
 
-If no suitable methods can be found for a generic, then an error is thrown. 
-For example, at the moment, get_n_elements() 
-only has 2 methods available. If you pass a 
-data.frame/matrix to get_n_elements() instead, you'll see an error. One 
-could use generic.default to deal with all the missing class of objects.
+If no suitable methods can be found for a generic, 
+then an error is thrown. For example, at the moment, get_n_elements() only has 2 methods available. If you 
+pass a data.frame/matrix to get_n_elements() instead, 
+you'll see an error. One could use generic.default to 
+deal with all the missing class of objects.
 
 ### Can variables have more than one class? 
 
 ```{r S3-MultipleClasses}
 human <- "laugh"
-
 # less specific to more specific; final default class,character
 class(human) <- c("mammalia","eukaryota","character")
-class(human)
 
 # create a generic method for who_am_i
 who_am_i <- function(x, ...) {
@@ -344,5 +339,9 @@ class(human)
 who_am_i(human) 
 
 ```
+
+
+
+
 
  
