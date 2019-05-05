@@ -1,12 +1,13 @@
 ---
-title: "Introduction to Object-Oriented Programming and S3 System in R"
-author: "S.Ravichandran ( https://github.com/ravichas/OOP-S3-in-R )"
+title: "Introduction to Object-Oriented Programming and S3 System in R (https://github.com/ravichas/OOP-S3-in-R )"
+author: "S.Ravichandran (saka.ravi@gmail.com)"
 date: "April 27, 2019"
-output: pdf_document 
+output: word_document
 theme: flatly
+
 ---
 
-# based on Carl Broman's code 
+<!-- based on Carl Broman's code  -->
 <style type="text/css">
 
 ul,ol {
@@ -22,6 +23,7 @@ code.r{
 pre {
   font-size: 20px
 }
+
 </style>
 
 
@@ -31,27 +33,30 @@ pre {
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 options(digits = 4)
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 
-### Preliminary information about object types in R
+## Preliminary information about object types in R
 
-Let us create a logical object, x.
+### Let us create a logical object, x, and ask for its class.
 ```{r logicaltype}
 (x <- TRUE) # logical
 print(class(x))
+
 ```
 
-Let us create a list, also called x. 
+### Let us create a list, also called x, and ask for its class. 
 ```{r numericaltype}
 (x <- list(nums = 1:10, 
           chars = c("one","two","three"),
           ints = c(1L,2L,3L)
           ))
 print(class(x))
+
 ```
 
-BMI is a data.frame with four variables, Gender, Height, Weight and Age.
+BMI is a data.frame with four variables, Gender, Height, Weight and Age. We will also R to print BMI's class. 
 ```{r dftype}
 (BMI <- 	data.frame(
    Gender = c("Male", "Male","Female"), 
@@ -60,9 +65,11 @@ BMI is a data.frame with four variables, Gender, Height, Weight and Age.
       Age = c(42,38,26)
 ))
 print(class(BMI))
+
 ```
 
-### Hands-on 1
+
+## Hands-on 1
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
 # needed libraries
@@ -77,11 +84,12 @@ library(dplyr)
 library(ggplot2)
 library(pryr)
 library(sloop)
+
 ```
 
-One of the important concept of OOP is functions can 
-respond in different ways depending on the input object type.
-To explain this concept, let us create the following objects:
+One of the important concept of OOP is functions can respond in different ways 
+depending on the input object type. To explain this concept, let us create the 
+following objects:
 
   * Numeric vector of 10 random numbers
   * Categorical vector of length 6 
@@ -89,31 +97,35 @@ To explain this concept, let us create the following objects:
   
 First, let us create a numerical vector with 10 elements.
 ```{r numeric-var, eval=TRUE }
+
 set.seed(111)
 (x_num <- rnorm(10) )
+
 ```
 
 
 Next, we build a categorical vector with 6 elements.
 ```{r factor-var, eval=TRUE}
 (x_fac <- factor(c("A", "B", "A", "C", "A", "B")))
+
 ```
 
-
-Finally, a linear model variable. 
+Finally, a linear model object. 
 
 ```{r model-var, eval=TRUE}
-# setting seed
-set.seed(123)
+set.seed(123)  # set seed 
 (x <- 1:10)
 (y <- jitter(x, amount = 2))
 
-#build a model
-model <- lm(y ~ x)
 
 data.frame(x, y) %>% ggplot(aes(x, y)) + 
   geom_point() + 
-  geom_smooth(method = "lm", col = "red")
+  geom_smooth(aes(col = "red"), method = "lm", se = FALSE) +
+  theme(legend.position="none")
+
+
+#build a model
+model <- lm(y ~ x)
 
 ```
 
@@ -122,12 +134,16 @@ data.frame(x, y) %>% ggplot(aes(x, y)) +
 ```{r summary-numeric}
 x_num
 summary(x_num)
+
 ```
 
 ```{r summary-factor}
 x_fac
 summary(x_fac)
+
 ```
+
+Finally, a linear model variable. 
 
 ```{r summary-model}
 model
@@ -139,29 +155,41 @@ summary(model)
 
 what command(s) can be used for this task?
 
+Let us create an integer matrix
 ```{r}
 # matrix 
-(int_mat <- matrix(1:12, nrow = 4, ncol = 3 )) # column major
+(int_mat <- matrix(1L:12L, nrow = 4, ncol = 3 )) # column major
 
-# determine the variable
+```
+
+Let us determine the variable class
+```{r}
 class(int_mat) # obj is a matrix
 
-# what type of matrix (elements are of what type)
+```
+
+What type of elements the matrix has?
+```{r}
 typeof(int_mat) # int matrix; content of the matrix
 
+```
+
+Let us this time create a matrix of floats and ask the same questions
+```{r}
 (float_mat <- matrix(rnorm(12), nrow = 4, ncol = 3))
 class(float_mat) # matrix
 typeof(float_mat) # double; type of var that makes up matrix
 # c code; in C floating point #s are double
+
 ```
 
 
-### Hands-on 2: 
+## Hands-on 2: 
 
 Interrogation of objects to see whether they are S3 objects
 
 ```{r}
-(int_mat <- matrix(1:12, nrow = 4, ncol = 3 )) # column major
+(int_mat <- matrix(1L:12L, nrow = 4, ncol = 3 )) # column major
 sloop::otype(int_mat) # package::command(object)
 
 head(mtcars)
@@ -170,13 +198,13 @@ sloop::otype(mtcars)
 ```
 
 
-### S3 & R6: How to assign classes?
+### S3: How to assign classes?
 
-* Can I override the class? 
-   * Yes
-* And as expected, it wont break the functionality
-* Can I woverride the type? 
-   * No 
+  * Can I override the class? 
+     * Yes
+  * And as expected, it wont break the functionality
+  * Can I woverride the type? 
+     * No 
 
 ```{r}
 x_num
@@ -190,9 +218,10 @@ x_num
 # we cannot override typeof 
 typeof(x_num)
 is.numeric(x_num) # no matter what the class says
+
 ```
 
-### S3 & R6: Function overloading
+### S3: Function overloading
 
 S3 exists so that we dont have to write many many functions to take
 care of different data types.
@@ -209,7 +238,7 @@ Example of generic functions are print, summary etc.
 (x_Date <- Sys.Date()) # "YYYY-MM-DD"
 class(x_Date) # "Date"
 
-print(x_Date) # "YYYY-MM-DD", 2019-03-26
+print(x_Date) # "YYYY-MM-DD"
 # is same as calling print.Date
 print.Date(x_Date) 
 
@@ -221,20 +250,21 @@ print
 print function is just a simple one line function.
 You can ignore the last two lines that shows the memory 
 location and the object  environment. 
-print function calls UseMethod("print") to provide the final output.
+After determining the class of the object, generic print function 
+calls via UseMethod("print") to provide the final output.
 
+### What **methods** exist for a **generic function**?
 
-### What methods exist for a generic function?
-
-* For example, for the generic function what methods are available
+* For example, for the **generic function** what methods are available
 * generic.class1, generic.class2, generic.class3
 
 Exmaple. print (generic), print.data.frame, print.Date etc.
 ```{r What-methods-for-generic}
 head(methods(print)) # too many methods 
+
 ```
 
-### What methods are available for a given class of an object? 
+### What **methods** are available for a **given class** of an object? 
 
 * The methods could be coming from different generic classes. 
   For example, generic1.class, generic2.class etc.
@@ -245,6 +275,7 @@ head(methods(print)) # too many methods
 methods(class = "lm") # or methods(class=lm)
 # of them which ones are S3
 .S3methods(class = "lm")
+
 ```
 
 ### Is the object/function generic or method? 
@@ -253,47 +284,48 @@ methods(class = "lm") # or methods(class=lm)
 pryr::is_s3_generic("print") # TRUE
 pryr::is_s3_method("print") # FALSE
 pryr::is_s3_method("print.Date") # TRUE
-```
+ 
+ ```
 Let us define our object.
-
+ 
 ```{r}
 (people <- c("Frank Blanchard",
-            "Andrea Gnuschke",
-            "Max Cole",
-            "Maryellen Hackett",
-            "Victoria Brun",
-            "Jonathan Summers",
-            "Christopher Worthington",
-            "Samuel Lopez",
-            "Richard Frederickson",
-            "Chris Hu") )
+             "Andrea Gnuschke",
+             "Max Cole",
+             "Maryellen Hackett",
+             "Victoria Brun",
+             "Jonathan Summers",
+             "Christopher Worthington",
+             "Samuel Lopez",
+             "Richard Frederickson",
+             "Chris Hu") )
 class(people)
 (class(people) <- "InsiteGroup")
+ 
 ```
-
+ 
 Suppose, we want to write an S3 function that gets the 
-first name from the InsiteGroup object.
-
+ first name from the **InsiteGroup** object.
+ 
 ```{r}
 GetFirst <- function(obj) { 
   UseMethod("GetFirst",obj) 
   }
-
+ 
 # create methods function 
 GetFirst.InsiteGroup <- function(obj) { 
   return(obj[1])
-}
-
-# create default function 
-GetFirst.default <- function(obj){
+ }
+ 
+ # create default function 
+GetFirst.default <- function(obj) {
   cat("This is a generic class\n")
-  # do something
+   # do something
   }
-
-GetFirst(people)
-
+ 
+ GetFirst(people)
+ 
 ```
-
 If no suitable methods can be found for a generic, 
 then an error is thrown. For example, at the moment, get_n_elements() only has 2 methods available. If you 
 pass a data.frame/matrix to get_n_elements() instead, 
@@ -303,45 +335,80 @@ deal with all the missing class of objects.
 ### Can variables have more than one class? 
 
 ```{r S3-MultipleClasses}
-human <- "laugh"
-# less specific to more specific; final default class,character
-class(human) <- c("mammalia","eukaryota","character")
+ human <- "laugh" 
 
+# less specific to more specific; final default class,character
+ class(human) <- c("mammalia","eukaryota","character")
+ 
 # create a generic method for who_am_i
 who_am_i <- function(x, ...) {
-  UseMethod("who_am_i")
-}
-
+   UseMethod("who_am_i")
+  }
+ 
 # create mammalia method for who_am_i
 who_am_i.mammalia <- function(x, ...) {
-  # let us write a message 
-  message("I am a Mammal")
-  NextMethod("x")
-}
-
+   # usually, we will carry out some useful procedure here!
+   message("I am a Mammal") # write a message
+  }
+ 
 # create eukarota method for who_am_i
 who_am_i.eukaryota <- function(x, ...) {
-  # let us write a message 
-  message("I am a Eukaryote")
-  NextMethod("x")
-}
-
+   message("I am a Eukaryote") # write a message
+  }
+ 
 # finally one for character method
 who_am_i.character <- function(x, ...) {
-  # let us write a message 
-  message("I am a simple character!")
-  # since this is the last, no NextMethod
-}
-
+   message("I am a simple character!") # write a message
+  }
+ 
 # call human to see all the 3 messages are displayed
-class(human)
-
-who_am_i(human) 
-
+ class(human)
+ 
+ who_am_i(human) 
+ 
 ```
 
 
+### Advanced example 
 
+
+```{r S3-MultipleClasses1}
+ human <- "laugh"
+
+# less specific to more specific; final default class,character
+ class(human) <- c("mammalia","eukaryota","character")
+ 
+# create a generic method for who_am_i
+who_am_i <- function(x, ...) {
+   UseMethod("who_am_i")
+  }
+ 
+# create mammalia method for who_am_i
+who_am_i.mammalia <- function(x, ...) {
+   # let us write a message 
+   message("I am a Mammal")
+   NextMethod("x")
+  }
+ 
+# create eukarota method for who_am_i
+who_am_i.eukaryota <- function(x, ...) {
+   # let us write a message 
+   message("I am a Eukaryote")
+   NextMethod("x")
+  }
+ 
+# finally one for character method
+who_am_i.character <- function(x, ...) {
+# let us write a message 
+   message("I am a simple character!")
+   # since this is the last, no NextMethod
+  }
+ 
+# call human to see all the 3 messages are displayed
+ class(human)
+ 
+ who_am_i(human) 
+ 
 
 
  
