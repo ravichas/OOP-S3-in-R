@@ -64,7 +64,13 @@ print(class(BMI))
 
 ### Hands-on 1
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, FunProg, eval = TRUE}
+mtcars
+mtcars %>% filter(mpg >= 20) %>% group_by(cyl) %>% select(mpg) %>% summarize(mean_mpg = mean(mpg)) 
+```
+
+
+```{r, libraries, echo = FALSE, warning = FALSE, message = FALSE}
 # needed libraries
 packages <- c("pryr", "sloop","magrittr","dplyr","ggplot2")
 if ( length(missing_pkgs <- setdiff(packages, rownames(installed.packages()))) > 0) {
@@ -92,7 +98,6 @@ First, let us create a numerical vector with 10 elements.
 set.seed(111)
 (x_num <- rnorm(10) )
 ```
-
 
 Next, we build a categorical vector with 6 elements.
 ```{r factor-var, eval=TRUE}
@@ -260,6 +265,7 @@ pryr::is_s3_generic("print") # TRUE
 pryr::is_s3_method("print") # FALSE
 pryr::is_s3_method("print.Date") # TRUE
 ```
+
 Let us define our object.
 
 ```{r}
@@ -298,7 +304,6 @@ GetFirst.default <- function(obj){
 methods(class = "InsiteGroup")
 
 GetFirst(people)
-
 ```
 
 If no suitable methods can be found for a generic, 
@@ -345,7 +350,6 @@ who_am_i.character <- function(x, ...) {
 class(human)
 
 who_am_i(human) 
-
 ```
 
 
