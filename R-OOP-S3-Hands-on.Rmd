@@ -24,8 +24,6 @@ pre {
 }
 </style>
 
-
-
 ```{r setup, include=FALSE}
 # set global chunk options: images will be 7x5 inches
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
@@ -253,7 +251,7 @@ head(methods(print)) # too many methods
 
 ```{r}
 # gives both S3 and S4
-methods(class = "lm") # or methods(class=lm)
+methods(class = lm) # or methods(class="lm")
 # of them which ones are S3
 .S3methods(class = "lm")
 ```
@@ -262,7 +260,7 @@ methods(class = "lm") # or methods(class=lm)
 
 ```{r}
 pryr::is_s3_generic("print") # TRUE
-pryr::is_s3_method("print") # FALSE
+pryr::is_s3_method("print") # FALSE; becos print is a gneric not a method
 pryr::is_s3_method("print.Date") # TRUE
 ```
 
@@ -301,7 +299,6 @@ GetFirst.default <- function(obj){
   cat("This is a generic class\n")
   # do something
   }
-methods(class = "InsiteGroup")
 
 GetFirst(people)
 ```
@@ -313,6 +310,44 @@ you'll see an error. One could use generic.default to
 deal with all the missing class of objects.
 
 ### Can variables have more than one class? 
+
+```{r S3-MultipleClasses}
+(human <- "laugh")
+# less specific to more specific; final default class,character
+class(human) <- c("mammalia","eukaryota","character")
+
+# create a generic method for who_am_i
+who_am_i <- function(x, ...) {
+  UseMethod("who_am_i")
+}
+
+# create mammalia method for who_am_i
+who_am_i.mammalia <- function(x, ...) {
+  # let us write a message 
+  message("I am a Mammal")
+}
+
+# create eukarota method for who_am_i
+who_am_i.eukaryota <- function(x, ...) {
+  # let us write a message 
+  message("I am a Eukaryote")
+}
+
+# finally one for character method
+who_am_i.character <- function(x, ...) {
+  # let us write a message 
+  message("I am a simple character!")
+}
+
+
+# call human to see all the 3 messages are displayed
+class(human)
+
+who_am_i(human) 
+```
+
+## Advanced example
+
 
 ```{r S3-MultipleClasses}
 (human <- "laugh")
@@ -351,8 +386,6 @@ class(human)
 
 who_am_i(human) 
 ```
-
-
 
 
 
